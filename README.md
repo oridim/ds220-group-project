@@ -72,10 +72,10 @@ classDiagram
         Name __R__
     }
 
-    Invoice "WrittenBy" --> SalesRepresentative
+    Invoice -->  "WrittenBy" SalesRepresentative
     Invoice "IssuedTo" --> Customer
-    DetailLine "WrittenIn" --> Invoice
+    DetailLine --> "WrittenIn" Invoice
     DetailLine "Itemizes" --> Product
-    Product "ProducedBy" --> Vendor
+    Product -->  "ProducedBy" Vendor
 ```
 
