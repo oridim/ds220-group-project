@@ -43,16 +43,16 @@ classDiagram
         LastName __R__
     }
 
-    class Invoice {
-        • Identifier __R__ __U__
-        WrittenBy __R__
-        IssuedTo __R__
-    }
-
     class Customer {
         • Identifier __R__ __U__
         FirstName __R__
         LastName __R__
+    }
+
+    class Invoice {
+        • Identifier __R__ __U__
+        WrittenBy __R__
+        IssuedTo __R__
     }
 
     class DetailLine {
