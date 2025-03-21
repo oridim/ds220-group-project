@@ -94,5 +94,5 @@ erDiagram
     Invoice }o--|| Customer: IssuedTo
     DetailLine }o--|| Invoice: WrittenIn
     DetailLine ||--|| Product: Itemizes
-    Product }o--|| Vendor: Produces
+    Product }o--|| Vendor: ProducedBy
 ```
