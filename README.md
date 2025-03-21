@@ -82,4 +82,4 @@ erDiagram
 
 ## ER Diagram
 
-![ER Diagram](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/oridim/ds220-group-project/refs/heads/main/ER Diagram.puml)
+![ER Diagram](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/oridim/ds220-group-project/refs/heads/main/ER%20Diagram.puml)
