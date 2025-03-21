@@ -126,3 +126,9 @@ flowchart BT
 
     class S testClass
 ```
+
+<style>
+    .testClass > rect {
+        stroke: green;
+    }
+</style>
