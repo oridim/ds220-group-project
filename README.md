@@ -36,46 +36,46 @@ flowchart TD
 ## Entity Tables
 
 ```mermaid
-classDiagram
-    class SalesRepresentative {
-        • Identifier __R__ __U__
-        FirstName __R__
-        LastName __R__
+erDiagram
+    SalesRepresentative {
+        *Identifier int
+        FirstName string "R"
+        LastName string "R"
     }
 
-    class Customer {
-        • Identifier __R__ __U__
-        FirstName __R__
-        LastName __R__
+    Customer {
+        *Identifier int
+        FirstName string "R"
+        LastName string "R"
     }
 
-    class Invoice {
-        • Identifier __R__ __U__
-        WrittenBy __R__
-        IssuedTo __R__
+    Invoice {
+        *Identifier int
+        FirstName string "R"
+        LastName string "R"
     }
 
-    class DetailLine {
-        • Identifier __R__ __U__
-        WrittenIn __R__
-        Itemizes __R__
+    DetailLine {
+        *Identifier int
+        WrittenIn int "FK,R"
+        Itemizes int "FK,R"
     }
 
-    class Product {
-        • Identifier __R__ __U__
-        Name __R__
-        ProducedBy __R__
+    Product {
+        *Identifier int
+        Name string "R"
+        ProducedBy int "FK,R"
     }
 
-    class Vendor {
-        • Identifier __R__ __U__
-        Name __R__
+    Vendor {
+        *Identifier int "R"
+        Name string "R"
     }
 
-    Invoice -->  "WrittenBy" SalesRepresentative
-    Invoice "IssuedTo" --> Customer
-    DetailLine --> "WrittenIn" Invoice
-    DetailLine "Itemizes" --> Product
-    Product -->  "ProducedBy" Vendor
+    Invoice }o--|| SalesRepresentative: WrittenBy
+    Invoice }o--|| Customer: IssuedTo
+    DetailLine }o--|| Invoice: WrittenIn
+    DetailLine ||--|| Product: Itemizes
+    Product }o--|| Vendor: Produces
 ```
 
