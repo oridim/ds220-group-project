@@ -124,5 +124,5 @@ flowchart BT
     P --- ProducedBy{ProducedBy}
     ProducedBy --- V
 
-    class A testClass
+    class S testClass
 ```
