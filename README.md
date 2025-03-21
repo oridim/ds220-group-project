@@ -10,6 +10,7 @@
   - [Entities](#entities)
   - [Relationships](#relationships)
   - [Entity Tables](#entity-tables)
+  - [ER Diagram](#er-diagram)
 
 ## Entities
 
@@ -79,3 +80,47 @@ erDiagram
     Product }o--|| Vendor: Produces
 ```
 
+## ER Diagram
+
+```mermaid
+flowchart BT
+    S[SalesRepresentative]
+    I[Invoice]
+    C[Customer]
+    D[DetailLine]
+    P[Product]
+    V[Vendor]
+
+    S_Identifier((Identifier)) --> S
+    S_FirstName((FirstName)) --> S
+    S_LastName((LastName)) --> S
+
+    I_Identifier((Identifier)) --> I
+
+    C_Identifier((Identifier)) --> C
+    C_FirstName((FirstName)) --> C
+    C_LastName((LastName)) --> C
+
+    D_Identifier((Identifier)) --> D
+
+    P_Identifier((Identifier)) --> P
+    P_Name((Name)) --> P
+
+    V_Identifier((Identifier)) --> V
+    V_Name((Name)) --> V
+
+    I --- WrittenBy{WrittenBy}
+    WrittenBy --- S
+
+    IssuedTo{IssuedTo} --- C
+    I --- IssuedTo
+
+    D --- WrittenIn{WrittenIn}
+    WrittenIn --- I
+
+    D --- Itemizes{Itemizes}
+    Itemizes --- P
+
+    P --- ProducedBy{ProducedBy}
+    ProducedBy --- V
+```
