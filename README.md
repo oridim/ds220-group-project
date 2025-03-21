@@ -82,4 +82,11 @@ erDiagram
 
 ## ER Diagram
 
+> [!NOTE]
+> PlantUML does not support partial key values for weak entities.
+> Just imagine the underlines for the `Identifier` attributes for `Invoice`, `DetailLine`, and `Product` are dotted instead of solid.
+
+> [!NOTE]
+> PlantUML has auto-layout for Peter Chen notation. Sorry for how "wide" the diagram is.
+
 ![ER Diagram](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/oridim/ds220-group-project/refs/heads/main/ERDiagram.puml)
