@@ -1,0 +1,63 @@
+@startchen
+
+entity SalesRepresentative {
+    Identifier <<key>>
+    FirstName
+    LastName
+}
+
+entity Customer {
+    Identifier <<key>>
+    FirstName
+    LastName
+}
+
+entity Invoice <<weak>> {
+    Identifier <<key>>
+}
+
+entity DetailLine <<weak>> {
+    Identifier <<key>>
+}
+
+entity Product <<weak>> {
+    Identifier <<key>>
+    Name
+}
+
+entity Vendor {
+    Identifier <<key>>
+    Name
+}
+
+relationship WrittenBy <<identifying>> {
+}
+
+relationship IssuedTo {
+}
+
+relationship WrittenIn {
+}
+
+relationship Itemizes {
+}
+
+relationship ProducedBy <<identifying>> {
+}
+
+WrittenBy =1= SalesRepresentative
+WrittenBy -N- Invoice
+
+IssuedTo -N- Invoice
+IssuedTo =1= Customer
+
+WrittenIn =1= Invoice
+WrittenIn -N- DetailLine
+
+Itemizes =1= DetailLine
+Itemizes =1= Product
+
+ProducedBy -N- Product
+ProducedBy =1= Vendor
+
+@endchen
