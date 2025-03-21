@@ -9,8 +9,8 @@
 - [DS 220 Group Project](#ds-220-group-project)
   - [Entities](#entities)
   - [Relationships](#relationships)
-  - [Entity Tables](#entity-tables)
   - [ER Diagram](#er-diagram)
+  - [Entity Tables](#entity-tables)
 
 ## Entities
 
@@ -33,6 +33,17 @@ flowchart TD
     V[Vendor] --> |Produces| P[Product]
     D --> |HasItemized| P
 ```
+
+## ER Diagram
+
+> [!NOTE]
+> PlantUML does not support partial key values for weak entities.
+> Just imagine the underlines for the `Identifier` attributes for `Invoice`, `DetailLine`, and `Product` are dotted instead of solid.
+
+> [!NOTE]
+> PlantUML has auto-layout for Peter Chen notation. Sorry for how "wide" the diagram is.
+
+![ER Diagram](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/oridim/ds220-group-project/refs/heads/main/ERDiagram.puml)
 
 ## Entity Tables
 
@@ -79,14 +90,3 @@ erDiagram
     DetailLine ||--|| Product: Itemizes
     Product }o--|| Vendor: Produces
 ```
-
-## ER Diagram
-
-> [!NOTE]
-> PlantUML does not support partial key values for weak entities.
-> Just imagine the underlines for the `Identifier` attributes for `Invoice`, `DetailLine`, and `Product` are dotted instead of solid.
-
-> [!NOTE]
-> PlantUML has auto-layout for Peter Chen notation. Sorry for how "wide" the diagram is.
-
-![ER Diagram](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/oridim/ds220-group-project/refs/heads/main/ERDiagram.puml)
