@@ -68,7 +68,7 @@ erDiagram
     }
 
     Vendor {
-        *Identifier int "R"
+        *Identifier int
         Name string "R"
     }
 
