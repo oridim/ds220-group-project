@@ -7,12 +7,16 @@
 </div>
 
 - [DS 220 Group Project](#ds-220-group-project)
-  - [Entities](#entities)
-  - [Relationships](#relationships)
-  - [ER Diagram](#er-diagram)
-  - [Entity Tables](#entity-tables)
+  - [Conceptual Stage](#conceptual-stage)
+    - [Entities](#entities)
+    - [Relationships](#relationships)
+    - [ER Diagram](#er-diagram)
+  - [Logical Stage](#logical-stage)
+    - [Entity Tables](#entity-tables)
 
-## Entities
+## Conceptual Stage
+
+### Entities
 
 | Entity Name           | Description                                                       |
 | --------------------- | ----------------------------------------------------------------- |
@@ -23,7 +27,7 @@
 | `Vendor`              | An external partner the company purchases products from.          |
 | `Product`             | A product produced by a vendor we are selling.                    |
 
-## Relationships
+### Relationships
 
 ```mermaid
 flowchart TD
@@ -34,7 +38,7 @@ flowchart TD
     D --> |HasItemized| P
 ```
 
-## ER Diagram
+### ER Diagram
 
 > [!NOTE]
 > PlantUML does not support partial key values for weak entities.
@@ -45,7 +49,9 @@ flowchart TD
 
 ![ER Diagram](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/oridim/ds220-group-project/refs/heads/main/ERDiagram.puml)
 
-## Entity Tables
+## Logical Stage
+
+### Entity Tables
 
 ```mermaid
 erDiagram
