@@ -14,6 +14,15 @@
     - [Requirement Queries](#requirement-queries)
   - [Logical Stage](#logical-stage)
     - [Entity Tables](#entity-tables)
+    - [Sample SQL Queries](#sample-sql-queries)
+      - [Query Product by Vendor Identifier](#query-product-by-vendor-identifier)
+      - [Query Product by Vendor Name](#query-product-by-vendor-name)
+      - [Query Vendor by if Customer Has Purchased From Before](#query-vendor-by-if-customer-has-purchased-from-before)
+      - [Create a New Invoice](#create-a-new-invoice)
+      - [Add Detail Lines to an Invoice](#add-detail-lines-to-an-invoice)
+      - [Query Invoices by Sales Representative](#query-invoices-by-sales-representative)
+      - [Query Invoices by Sales Representative _and_ Vendor](#query-invoices-by-sales-representative-and-vendor)
+      - [Query Invoices by Sales Representative _and_ Vendor Name](#query-invoices-by-sales-representative-and-vendor-name)
 
 ## Conceptual Stage
 
@@ -118,4 +127,99 @@ erDiagram
     DetailLine }o--|| Invoice: WrittenIn
     DetailLine ||--|| Product: Itemizes
     Product }o--|| Vendor: ProducedBy
+```
+
+### Sample SQL Queries
+
+#### Query Product by Vendor Identifier
+
+> [!NOTE]
+> The prefixes in the examples below correspond to the first letter of each database table.
+>
+> ex. <code><strong>V_</strong>123456789</code> -> **V**endor.
+
+> [!NOTE]
+> The prefixes are just for demonstration purposes _only_. Primary keys in the database are purely interger values with no prefixes.
+
+```sql
+SELECT *
+    FROM Product
+    WHERE Product.ProducedBy = V_123456789;
+```
+
+#### Query Product by Vendor Name
+
+```sql
+SELECT *
+    FROM Product
+    INNER JOIN Vendor
+        ON Vendor.Identifier = Product.ProducedBy
+    WHERE Vendor.Name = "ACME Industries";
+```
+
+#### Query Vendor by if Customer Has Purchased From Before
+
+```sql
+SELECT DISTINCT Vendor.*
+    FROM Customer
+    INNER JOIN Invoice
+        ON Invoice.IssuedTo = Customer.Identifier
+    INNER JOIN DetailLine
+        ON DetailLine.WrittenIn = Invoice.Identifier
+    INNER JOIN Product
+        ON Product.Identifier = DetailLine.Itemizes
+    INNER JOIN Vendor
+        ON Vendor.Identifier = Product.ProducedBy
+    WHERE Customer.Identifier = C_123456789;
+```
+
+#### Create a New Invoice
+
+```sql
+INSERT
+    INTO Invoice (IssuedTo, WrittenBy)
+    VALUES (C_123456789, S_987654321);
+```
+
+#### Add Detail Lines to an Invoice
+
+```sql
+INSERT
+    INTO DetailLine (WrittenIn, Itemizes)
+    VALUES
+        (I_123456789, P_987654321),
+        (I_123456789, P_564738291),
+        (I_123456789, P_281983746);
+```
+
+#### Query Invoices by Sales Representative
+
+```sql
+SELECT *
+    FROM Invoice
+    WHERE Invoice.WrittenBy = S_123456789;
+```
+
+#### Query Invoices by Sales Representative _and_ Vendor
+
+```sql
+SELECT DISTINCT Invoice.*
+    FROM Invoice
+    JOIN DetailLine ON DetailLine.WrittenIn = Invoice.Identifier
+    JOIN Product ON Product.Identifier = DetailLine.Itemizes
+    JOIN Vendor ON Vendor.Identifier = Product.ProducedBy
+    WHERE Vendor.Identifier = V_123456789
+        AND Invoice.WrittenBy = S_987654321;
+```
+
+#### Query Invoices by Sales Representative _and_ Vendor Name
+
+```sql
+SELECT DISTINCT Invoice.*
+    FROM Invoice
+    JOIN DetailLine ON DetailLine.WrittenIn = Invoice.Identifier
+    JOIN Product ON Product.Identifier = DetailLine.Itemizes
+    JOIN Vendor ON Vendor.Identifier = Product.ProducedBy
+    WHERE Vendor.Name = "ACME Industries"
+        AND Invoice.WrittenBy = S_987654321;
 ```
