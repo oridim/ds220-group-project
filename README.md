@@ -92,8 +92,8 @@ erDiagram
 
     Invoice {
         *Identifier int
-        FirstName string "R"
-        LastName string "R"
+        IssuedTo int "FK,R"
+        WrittenBy int "FK,R"
     }
 
     DetailLine {
