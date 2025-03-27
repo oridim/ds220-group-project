@@ -11,6 +11,7 @@
     - [Entities](#entities)
     - [Relationships](#relationships)
     - [ER Diagram](#er-diagram)
+    - [Requirement Queries](#requirement-queries)
   - [Logical Stage](#logical-stage)
     - [Entity Tables](#entity-tables)
 
@@ -48,6 +49,28 @@ flowchart TD
 > PlantUML has bad auto-layout for Peter Chen notation. Sorry for how "wide" the diagram is.
 
 ![ER Diagram](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/oridim/ds220-group-project/refs/heads/main/ERDiagram.puml)
+
+### Requirement Queries
+
+Here are a list of assumed queries that our sales representatives and customers will want to make:
+
+- Customers **will want** to view our entire inventory or product on our website.
+
+    - They will want to filter _by vendor_.
+    - They will want to filter _by product_ they have _purchased before_.
+    - They will want to filter _by vendors_ they have _purchased from before_.
+
+- Sales representatives **need** to be able to issue invoices to customers.
+
+    - They should _only_ be able to issue invoices to _existing customers_.
+    - They should _only_ be able to _include product_ in _our system_ for the detail lines of the invoice.
+
+- Sales representatives and customers **need** to be able to view invoices.
+
+    - Sales representatives should _only_ be able to view invoices _they have issued_.
+    - Customers should _only_ be able to view invoices _they been issued_.
+    - Both sales representatives and customers will want to filter invoices _by vendor_.
+    - Both sales representatives and customers will want to filter invoices _by product_.
 
 ## Logical Stage
 
