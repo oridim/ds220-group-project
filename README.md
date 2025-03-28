@@ -88,38 +88,38 @@ Here are a list of assumed queries that our sales representatives and customers 
 ```mermaid
 erDiagram
     SalesRepresentative {
-        *Identifier int
-        FirstName string "R"
-        LastName string "R"
+        *Identifier SERIAL
+        FirstName VARCHAR(40) "R"
+        LastName VARCHAR(40) "R"
     }
 
     Customer {
-        *Identifier int
-        FirstName string "R"
-        LastName string "R"
+        *Identifier SERIAL
+        FirstName VARCHAR(40) "R"
+        LastName VARCHAR(40) "R"
     }
 
     Invoice {
-        *Identifier int
-        IssuedTo int "FK,R"
-        WrittenBy int "FK,R"
+        *Identifier SERIAL
+        IssuedTo INTEGER "FK,R"
+        WrittenBy INTEGER "FK,R"
     }
 
     DetailLine {
-        *Identifier int
-        WrittenIn int "FK,R"
-        Itemizes int "FK,R"
+        *Identifier SERIAL
+        WrittenIn INTEGER "FK,R"
+        Itemizes INTEGER "FK,R"
     }
 
     Product {
-        *Identifier int
-        Name string "R"
-        ProducedBy int "FK,R"
+        *Identifier SERIAL
+        Name VARCHAR(40) "R"
+        ProducedBy INTEGER "FK,R"
     }
 
     Vendor {
-        *Identifier int
-        Name string "R"
+        *Identifier SERIAL
+        Name VARCHAR(40) "R"
     }
 
     Invoice }o--|| SalesRepresentative: WrittenBy
