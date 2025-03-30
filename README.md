@@ -57,7 +57,7 @@ flowchart TD
 > [!NOTE]
 > PlantUML has bad auto-layout for Peter Chen notation. Sorry for how "wide" the diagram is.
 
-![ER Diagram](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/oridim/ds220-group-project/refs/heads/main/diagrams/docs/ERDiagram.puml)
+![ER Diagram](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/oridim/ds220-group-project/refs/heads/main/docs/ERDiagram.puml)
 
 ### Requirement Queries
 
