@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HELP!! HELP ME!!!!!!!!!!</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@materializecss/materialize@2.2.1/dist/css/materialize.min.css">
+    <!-- Help: https://materializeweb.com/, do not use https://materializecss.com/ -->
+    <link href="https://unpkg.com/tabulator-tables@6.3.1/dist/css/tabulator.min.css" rel="stylesheet">
+    <!-- Help: https://tabulator.info/docs/6.3 -->
+</head>
+<body>
+<div class="header">
+    <h1>PowerSales</h1>
+    <button onclick="show('app-customer')" id="customer-button" class="btn">Customer View</button>
+    <button onclick="show('app-sales-rep')" id="sales-button" class="btn">Sales Representative View</button>
+    <button onclick="show('back')" id="back-button" class="hide btn">Back</button>
+    <!-- TODO: Turn this into some navbar... see https://materializeweb.com/navbar.html -->
+</div>
+
+<div class="app">
+    <div id="app-customer" class="hidden">
+        <h2>Customer View</h2>
+        <div class="input-field">
+            <input type="text" id="customer-id" inputmode="numeric" pattern="[0-9]*" placeholder="Customer ID Number" required>
+            <label for="customer-id">Your ID Number:</label>
+        </div>
+        <h3>Product Inventory</h3>
+        <!-- TODO: Make inventory table... see https://tabulator.info/docs/6.3/options -->
+        <h3>Your Invoices</h3>
+        <!-- TODO: Make invoices table... see https://tabulator.info/docs/6.3/options -->
+    </div>
+
+    <div id="app-sales-rep" class="hidden">
+        <h1>Sales Representative View</h1>
+        <div class="input-field">
+            <input type="text" id="rep-id" inputmode="numeric" pattern="[0-9]*" placeholder="Sales Rep ID Number" required>
+            <label for="rep-id">Your ID Number:</label>
+        </div>
+        <h3>Invoices</h3>
+        <!-- TODO:
+                - Make Invoices Table... see https://tabulator.info/docs/6.3/options
+                - Add feature to add an invoice, could try a modal: https://materializeweb.com/modals.htmls
+        -->
+    </div>
+</div>
+
+<script src="js/script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@materializecss/materialize@2.2.1/dist/js/materialize.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/tabulator-tables@6.3.1/dist/js/tabulator.min.js"></script>
+</body>
+</html>

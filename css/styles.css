@@ -1,0 +1,17 @@
+.hidden {
+    display: none;
+}
+
+.header {
+    margin: 0 auto;
+    text-align: center;
+}
+
+.app {
+    margin: 0 auto;
+    width: 80%;
+}
+
+#customer-id {
+    width: 20em;
+}
