@@ -1,3 +1,8 @@
+import { createClient } from '@supabase/supabase-js'
+const supabaseUrl = 'https://ygxvsejbquoouqrawuwc.supabase.co'
+const supabaseKey = process.env.SUPABASE_KEY
+const supabase = createClient(supabaseUrl, supabaseKey)
+
 CustomerApp = document.getElementById("app-customer");
 SalesRepApp = document.getElementById("app-sales-rep");
 CustomerButton = document.getElementById("customer-button");
