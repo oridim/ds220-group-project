@@ -11,10 +11,19 @@
 </head>
 <body>
 <div class="header">
-    <h1>PowerSales</h1>
-    <button onclick="show('app-customer')" id="customer-button" class="btn">Customer View</button>
+    <nav class="#424242 grey darken-3">
+        <div class="nav-wrapper">
+            <ul id="nav-mobile" class="left hide-on-med-and-down">
+                <li><a href="#" onclick="show('app-customer')" id="customer-button">Customer View</a></li>
+                <li><a href="#" onclick="show('app-sales-rep')" id="sales-button">Sales Representative View</a></li>
+                <li><a href="#" onclick="show('back')" id="back-button" class="hide">Back</a></li>
+            </ul>   
+        </div>
+      </nav>
+      <h1>PowerSales</h1>
+    <!-- <button onclick="show('app-customer')" id="customer-button" class="btn">Customer View</button>
     <button onclick="show('app-sales-rep')" id="sales-button" class="btn">Sales Representative View</button>
-    <button onclick="show('back')" id="back-button" class="hide btn">Back</button>
+    <button onclick="show('back')" id="back-button" class="hide btn">Back</button> -->
     <!-- TODO: Turn this into some navbar... see https://materializeweb.com/navbar.html -->
 </div>
 
@@ -44,8 +53,6 @@
         -->
     </div>
 </div>
-
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 
 <script src="js/script.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@materializecss/materialize@2.2.1/dist/js/materialize.min.js"></script>
