@@ -170,7 +170,7 @@ erDiagram
 > ex. <code><strong>V_</strong>123456789</code> -> **V**endor.
 
 > [!NOTE]
-> The prefixes are just for demonstration purposes _only_. Primary keys in the database are purely interger values with no prefixes.
+> The prefixes are just for demonstration purposes _only_. Primary keys in the database are purely integer values with no prefixes.
 
 ```sql
 SELECT *
