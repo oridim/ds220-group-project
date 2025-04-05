@@ -7,6 +7,9 @@
 </div>
 
 - [DS 220 Group Project](#ds-220-group-project)
+  - [Installation](#installation)
+  - [Running the Project](#running-the-project)
+  - [Configuration](#configuration)
   - [Conceptual Stage](#conceptual-stage)
     - [Entities](#entities)
     - [Relationships](#relationships)
@@ -23,6 +26,34 @@
       - [Query Invoices by Sales Representative](#query-invoices-by-sales-representative)
       - [Query Invoices by Sales Representative _and_ Vendor](#query-invoices-by-sales-representative-and-vendor)
       - [Query Invoices by Sales Representative _and_ Vendor Name](#query-invoices-by-sales-representative-and-vendor-name)
+
+## Installation
+Clone the repository using:
+
+```bash
+git clone https://github.com/oridim/ds220-group-project
+```
+
+No additional installation is required — everything runs in the browser, provided it's a graphical browser with JavaScript support. [Sorry, Lynx users](https://lynx.invisible-island.net/) ☹️.
+
+## Running the Project
+
+You can open the project directly by launching the `index.html` file in your browser.
+
+## Configuration
+
+A `config.sample.js` file is included in the repository. To configure the project:
+
+1. Duplicate the `config.sample.js` file.
+2. Rename the copy to `config.js`.
+3. Inside `config.js`, replace the placeholder values with your actual Supabase credentials:
+
+```js
+SUPABASE_URL = "https://your-project.supabase.co";
+SUPABASE_ANON_KEY = "your-anon-key";
+```
+
+Make sure both the URL and Anon Key are correct for your Supabase project. The app won't function properly without them.
 
 ## Conceptual Stage
 
@@ -65,21 +96,21 @@ Here are a list of assumed queries that our sales representatives and customers 
 
 - Customers **will want** to view our entire inventory or product on our website.
 
-    - They will want to filter _by vendor_.
-    - They will want to filter _by product_ they have _purchased before_.
-    - They will want to filter _by vendors_ they have _purchased from before_.
+  - They will want to filter _by vendor_.
+  - They will want to filter _by product_ they have _purchased before_.
+  - They will want to filter _by vendors_ they have _purchased from before_.
 
 - Sales representatives **need** to be able to issue invoices to customers.
 
-    - They should _only_ be able to issue invoices to _existing customers_.
-    - They should _only_ be able to _include product_ in _our system_ for the detail lines of the invoice.
+  - They should _only_ be able to issue invoices to _existing customers_.
+  - They should _only_ be able to _include product_ in _our system_ for the detail lines of the invoice.
 
 - Sales representatives and customers **need** to be able to view invoices.
 
-    - Sales representatives should _only_ be able to view invoices _they have issued_.
-    - Customers should _only_ be able to view invoices _they been issued_.
-    - Both sales representatives and customers will want to filter invoices _by vendor_.
-    - Both sales representatives and customers will want to filter invoices _by product_.
+  - Sales representatives should _only_ be able to view invoices _they have issued_.
+  - Customers should _only_ be able to view invoices _they been issued_.
+  - Both sales representatives and customers will want to filter invoices _by vendor_.
+  - Both sales representatives and customers will want to filter invoices _by product_.
 
 ## Logical Stage
 
@@ -143,83 +174,83 @@ erDiagram
 
 ```sql
 SELECT *
-    FROM Product
-    WHERE Product.ProducedBy = V_123456789;
+FROM Product
+WHERE Product.ProducedBy = V_123456789;
 ```
 
 #### Query Product by Vendor Name
 
 ```sql
 SELECT *
-    FROM Product
-    INNER JOIN Vendor
-        ON Vendor.Identifier = Product.ProducedBy
-    WHERE Vendor.Name = "ACME Industries";
+FROM Product
+       INNER JOIN Vendor
+                  ON Vendor.Identifier = Product.ProducedBy
+WHERE Vendor.Name = "ACME Industries";
 ```
 
 #### Query Vendor by if Customer Has Purchased From Before
 
 ```sql
 SELECT DISTINCT Vendor.*
-    FROM Customer
-    INNER JOIN Invoice
-        ON Invoice.IssuedTo = Customer.Identifier
-    INNER JOIN DetailLine
-        ON DetailLine.WrittenIn = Invoice.Identifier
-    INNER JOIN Product
-        ON Product.Identifier = DetailLine.Itemizes
-    INNER JOIN Vendor
-        ON Vendor.Identifier = Product.ProducedBy
-    WHERE Customer.Identifier = C_123456789;
+FROM Customer
+       INNER JOIN Invoice
+                  ON Invoice.IssuedTo = Customer.Identifier
+       INNER JOIN DetailLine
+                  ON DetailLine.WrittenIn = Invoice.Identifier
+       INNER JOIN Product
+                  ON Product.Identifier = DetailLine.Itemizes
+       INNER JOIN Vendor
+                  ON Vendor.Identifier = Product.ProducedBy
+WHERE Customer.Identifier = C_123456789;
 ```
 
 #### Create a New Invoice
 
 ```sql
 INSERT
-    INTO Invoice (IssuedTo, WrittenBy)
-    VALUES (C_123456789, S_987654321);
+INTO Invoice (IssuedTo, WrittenBy)
+VALUES (C_123456789, S_987654321);
 ```
 
 #### Add Detail Lines to an Invoice
 
 ```sql
 INSERT
-    INTO DetailLine (WrittenIn, Itemizes)
-    VALUES
-        (I_123456789, P_987654321),
-        (I_123456789, P_564738291),
-        (I_123456789, P_281983746);
+INTO DetailLine (WrittenIn, Itemizes)
+VALUES
+  (I_123456789, P_987654321),
+  (I_123456789, P_564738291),
+  (I_123456789, P_281983746);
 ```
 
 #### Query Invoices by Sales Representative
 
 ```sql
 SELECT *
-    FROM Invoice
-    WHERE Invoice.WrittenBy = S_123456789;
+FROM Invoice
+WHERE Invoice.WrittenBy = S_123456789;
 ```
 
 #### Query Invoices by Sales Representative _and_ Vendor
 
 ```sql
 SELECT DISTINCT Invoice.*
-    FROM Invoice
-    JOIN DetailLine ON DetailLine.WrittenIn = Invoice.Identifier
-    JOIN Product ON Product.Identifier = DetailLine.Itemizes
-    JOIN Vendor ON Vendor.Identifier = Product.ProducedBy
-    WHERE Vendor.Identifier = V_123456789
-        AND Invoice.WrittenBy = S_987654321;
+FROM Invoice
+       JOIN DetailLine ON DetailLine.WrittenIn = Invoice.Identifier
+       JOIN Product ON Product.Identifier = DetailLine.Itemizes
+       JOIN Vendor ON Vendor.Identifier = Product.ProducedBy
+WHERE Vendor.Identifier = V_123456789
+  AND Invoice.WrittenBy = S_987654321;
 ```
 
 #### Query Invoices by Sales Representative _and_ Vendor Name
 
 ```sql
 SELECT DISTINCT Invoice.*
-    FROM Invoice
-    JOIN DetailLine ON DetailLine.WrittenIn = Invoice.Identifier
-    JOIN Product ON Product.Identifier = DetailLine.Itemizes
-    JOIN Vendor ON Vendor.Identifier = Product.ProducedBy
-    WHERE Vendor.Name = "ACME Industries"
-        AND Invoice.WrittenBy = S_987654321;
+FROM Invoice
+       JOIN DetailLine ON DetailLine.WrittenIn = Invoice.Identifier
+       JOIN Product ON Product.Identifier = DetailLine.Itemizes
+       JOIN Vendor ON Vendor.Identifier = Product.ProducedBy
+WHERE Vendor.Name = "ACME Industries"
+  AND Invoice.WrittenBy = S_987654321;
 ```
