@@ -16,46 +16,49 @@
             <ul id="nav-mobile" class="left hide-on-med-and-down">
                 <li><a href="#" onclick="show('app-customer')" id="customer-button">Customer View</a></li>
                 <li><a href="#" onclick="show('app-sales-rep')" id="sales-button">Sales Representative View</a></li>
-                <li><a href="#" onclick="show('back')" id="back-button" class="hide">Back</a></li>
+                <li><a href="#" onclick="show('main')" id="back-button" class="hide">Back</a></li>
+                <li><a href="#" onclick="addInvoice()" id="add-invoice-button" class="hide">Add Invoice</a></li>
             </ul>   
         </div>
       </nav>
-      <h1>PowerSales</h1>
-    <!-- <button onclick="show('app-customer')" id="customer-button" class="btn">Customer View</button>
-    <button onclick="show('app-sales-rep')" id="sales-button" class="btn">Sales Representative View</button>
-    <button onclick="show('back')" id="back-button" class="hide btn">Back</button> -->
-    <!-- TODO: Turn this into some navbar... see https://materializeweb.com/navbar.html -->
+      <h1 id="title">PowerSales</h1>
 </div>
 
 <div class="app">
     <div id="app-customer" class="hidden">
-        <h2>Customer View</h2>
         <div class="input-field">
-            <input type="text" id="customer-id" inputmode="numeric" pattern="[0-9]*" placeholder="Customer ID Number" required>
-            <label for="customer-id">Your ID Number:</label>
+            <input type="text" id="customer-id-input" placeholder="Customer ID Number" required>
+            <label for="customer-id-input">Your ID Number:</label>
         </div>
-        <h3>Product Inventory</h3>
-        <!-- TODO: Make inventory table... see https://tabulator.info/docs/6.3/options -->
-        <h3>Your Invoices</h3>
-        <!-- TODO: Make invoices table... see https://tabulator.info/docs/6.3/options -->
+        <div id="customer-view">
+            <h3>Product Inventory</h3>
+            <div id="inventory-table"></div>
+            <h3>Your Invoices</h3>
+            <div id="customer-invoice-table"></div>
+            <!--TODO: Add filters for both tables-->
+        </div>
     </div>
 
     <div id="app-sales-rep" class="hidden">
-        <h1>Sales Representative View</h1>
         <div class="input-field">
-            <input type="text" id="rep-id" inputmode="numeric" pattern="[0-9]*" placeholder="Sales Rep ID Number" required>
-            <label for="rep-id">Your ID Number:</label>
+            <input type="text" id="rep-id-input" placeholder="Sales Rep ID Number" required>
+            <label for="rep-id-input">Your ID Number:</label>
         </div>
-        <h3>Invoices</h3>
-        <!-- TODO:
-                - Make Invoices Table... see https://tabulator.info/docs/6.3/options
-                - Add feature to add an invoice, could try a modal: https://materializeweb.com/modals.htmls
-        -->
+        <div id="sales-rep-view">
+            <h3>Invoices</h3>
+            <div id="rep-invoices-table"></div>
+            <!-- TODO:
+                    - Add filters for the table
+                    - Add feature to add an invoice via the new button, could try a modal: https://materializeweb.com/modals.htmls
+            -->
+        </div>
     </div>
 </div>
 
-<script src="js/script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/@materializecss/materialize@2.2.1/dist/js/materialize.min.js"></script>
 <script type="text/javascript" src="https://unpkg.com/tabulator-tables@6.3.1/dist/js/tabulator.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/script.js"></script>
 </body>
 </html>
