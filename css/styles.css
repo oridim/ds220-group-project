@@ -12,6 +12,11 @@
     width: 80%;
 }
 
+.modal {
+    background-color: #e2e2e5;
+    color: #1a1c1e;
+}
+
 #customer-id {
     width: 20em;
 }

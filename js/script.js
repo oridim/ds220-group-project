@@ -96,6 +96,7 @@ function show(app) {
         AddInvoiceButton.classList.add("hide");
         CustomerIDInput.value = "";
         SalesRepIDInput.value = "";
+        InventoryPurchasedCheckbox.checked = false;
         clearTables()
 
     } else {
