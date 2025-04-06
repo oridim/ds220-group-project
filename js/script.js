@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     const elems = document.querySelectorAll('.modal');
     const instances = M.Modal.init(elems, {
-        // specify options here
     });
 });
 
@@ -18,6 +17,8 @@ BackButton = document.getElementById("back-button");
 AddInvoiceButton = document.getElementById("add-invoice-button");
 CustomerIDInput = document.getElementById("customer-id-input");
 SalesRepIDInput = document.getElementById("rep-id-input");
+InventoryVendorInput = document.getElementById("inventory-filter");
+InventoryPurchasedCheckbox = document.getElementById("inventory-purchased-checkbox");
 
 var CustomerInventoryTable = new Tabulator(`#inventory-table`, {
     layout: "fitColumns",
@@ -68,6 +69,19 @@ var DetailLineTable = new Tabulator(`#detail-line-table`, {
     ],
 });
 
+InventoryVendorInput.addEventListener("keyup", function() {
+    const keyword = this.value.toLowerCase();
+
+    CustomerInventoryTable.setFilter([
+        { field: "vendor_name", type: "like", value: keyword },
+    ]);
+})
+
+InventoryPurchasedCheckbox.addEventListener("change", function() {
+    getAllProducts(CustomerIDInput.value);
+    CustomerInventoryTable.clearFilter();
+});
+
 function show(app) {
     if (app === "main") {
         Title.innerText = "PowerSales";
@@ -102,6 +116,7 @@ function show(app) {
     }
 }
 
+// Only used for API calls, everything else should be instant
 function debounce(func, delay) {
     let timeout;
     return function (...args) {
@@ -110,12 +125,19 @@ function debounce(func, delay) {
     };
 }
 
-async function getAllProducts() {
-    const { data, error } = await supabase.rpc('view_all_products');
+async function getAllProducts(input) {
+    let data, error;
+
+    if (InventoryPurchasedCheckbox.checked) {
+        ({data, error} = await supabase.rpc('get_customer_products', { input_id: Number(input) }));
+    } else {
+        ({data, error} = await supabase.rpc('view_all_products'));
+    }
 
     if (error) { console.log(error); }
 
     CustomerInventoryTable.replaceData(data);
+    InventoryVendorInput.value = "";
 }
 
 async function getAllCustomerInvoices(input_id) {
@@ -140,8 +162,8 @@ async function validateCustomerId(input_id) {
     if (error) { console.log(error); }
 
     if (input_id in data) {
-        getAllProducts();
-        getAllCustomerInvoices(input_id);
+        await getAllProducts(input_id);
+        await getAllCustomerInvoices(input_id);
     } else {
         clearTables();
     }
@@ -153,7 +175,7 @@ async function validateSalesRepId(input_id) {
     if (error) { console.log(error); }
 
     if (input_id in data) {
-        getAllSalesRepInvoices(input_id);
+        await getAllSalesRepInvoices(input_id);
     } else {
         clearTables();
     }

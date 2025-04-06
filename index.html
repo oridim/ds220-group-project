@@ -32,6 +32,16 @@
         </div>
         <div id="customer-view">
             <h3>Product Inventory</h3>
+            <div class="input-field">
+                <input type="text" id="inventory-filter" placeholder="Search Vendor">
+                <label for="inventory-filter">Filter By Vendor:</label>
+            </div>
+            <div id="checkbox-container">
+                <label>
+                    <input id="inventory-purchased-checkbox" type="checkbox" class="filled-in" id="inventory-purchased" />
+                    <span>Filter by purchased?</span>
+                </label>
+            </div>
             <div id="inventory-table"></div>
             <h3>Your Invoices</h3>
             <div id="customer-invoice-table"></div>

@@ -16,18 +16,12 @@
     width: 20em;
 }
 
-/*#customer-button {*/
-/*        color: #f3cbcb;*/
-/*}*/
-
-/*#sales-button {*/
-/*    color: #f3cbcb;*/
-/*}*/
-
-/*#back-button {*/
-/*    color: #f3cbcb;*/
-/*}*/
-
 #customer-view {
     text-align: center;
+}
+
+#checkbox-container {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    text-align: left;
 }
