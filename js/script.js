@@ -204,7 +204,7 @@ SalesRepIDInput.addEventListener("input", debounce((e) => {
     validateSalesRepId(SalesRepIDInput.value);
 }, 1000));
 
-// DETAIL LINE
+// *************** DETAIL LINE *********************************************
 DetailLineTitle = document.getElementById("detail-line-title");
 DetailLineIssuer = document.getElementById("detail-line-issuer");
 
@@ -232,7 +232,8 @@ async function showDetailLine(e, row, role) {
     detailline.showPopover();
 }
 
-// ADD INVOICE
+// *************** ADD INVOICE *********************************************
+// TODO: Finish implementing the add invoice functionality
 var ProductsGet = [];
 const InvoiceAddCustomerID = document.getElementById("add-invoice-id");
 
