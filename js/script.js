@@ -177,15 +177,19 @@ SalesRepIDInput.addEventListener("input", debounce((e) => {
     validateSalesRepId(SalesRepIDInput.value);
 }, 1000));
 
-// DETAIL LINE (CUSTOMER)
+// DETAIL LINE
 DetailLineTitle = document.getElementById("detail-line-title");
 DetailLineIssuer = document.getElementById("detail-line-issuer");
 
 CustomerInvoicesTable.on("rowClick", function (e, row) {
-    showDetailLine(e, row);
+    showDetailLine(e, row, "customer");
 });
 
-async function showDetailLine(e, row) {
+SalesRepInvoiceTable.on("rowClick", function (e, row) {
+    showDetailLine(e, row, "sales");
+});
+
+async function showDetailLine(e, row, role) {
     const { data, error } = await supabase.rpc('get_product_details_by_invoice', { detailline_input: Number(row.getData().invoice_id)});
 
     if (error) { console.log(error); }
@@ -193,6 +197,10 @@ async function showDetailLine(e, row) {
     DetailLineTable.replaceData(data);
 
     DetailLineTitle.innerText = `Invoice ID: ${row.getData().invoice_id}`;
-    DetailLineIssuer.innerText = `Issuer: ${row.getData().rep_firstname + " " + row.getData().rep_lastname} (ID: ${row.getData().rep_id})`;
-    detailline.showPopover()
+    if(role === "customer") {
+        DetailLineIssuer.innerText = `Issuer: ${row.getData().rep_firstname + " " + row.getData().rep_lastname} (ID: ${row.getData().rep_id})`;
+    } else if (role === "sales") {
+        DetailLineIssuer.innerText = `Issued to: ${row.getData().customer_firstname + " " + row.getData().customer_lastname} (ID: ${row.getData().customer_id})`;
+    }
+    detailline.showPopover();
 }
