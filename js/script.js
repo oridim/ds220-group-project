@@ -1,3 +1,10 @@
+document.addEventListener('DOMContentLoaded', function() {
+    const elems = document.querySelectorAll('.modal');
+    const instances = M.Modal.init(elems, {
+        // specify options here
+    });
+});
+
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 Title = document.getElementById("title");
@@ -46,6 +53,18 @@ var SalesRepInvoiceTable = new Tabulator(`#rep-invoices-table`, {
                 return `${data.customer_firstname} ${data.customer_lastname}`;
             } },
         { title: "Customer ID", field: "customer_id", width: 150, hozAlign: "left", headerHozAlign: "left" },
+    ],
+});
+
+var DetailLineTable = new Tabulator(`#detail-line-table`, {
+    layout: "fitColumns",
+    height: "fitData",
+    columns: [
+        { title: "Product ID", field: "product_id", width: 150, hozAlign: "right", headerHozAlign: "right" },
+        { title: "Product Name", field: "product_name" },
+        { title: "Vendor Name", field: "vendor_name" },
+        { title: "Vendor ID", field: "vendor_id", width: 150, hozAlign: "left", headerHozAlign: "left" },
+        { title: "Quantity", field: "quantity", width: 150, hozAlign: "right", headerHozAlign: "right" },
     ],
 });
 
@@ -157,3 +176,23 @@ CustomerIDInput.addEventListener("input", debounce((e) => {
 SalesRepIDInput.addEventListener("input", debounce((e) => {
     validateSalesRepId(SalesRepIDInput.value);
 }, 1000));
+
+// DETAIL LINE (CUSTOMER)
+DetailLineTitle = document.getElementById("detail-line-title");
+DetailLineIssuer = document.getElementById("detail-line-issuer");
+
+CustomerInvoicesTable.on("rowClick", function (e, row) {
+    showDetailLine(e, row);
+});
+
+async function showDetailLine(e, row) {
+    const { data, error } = await supabase.rpc('get_product_details_by_invoice', { detailline_input: Number(row.getData().invoice_id)});
+
+    if (error) { console.log(error); }
+
+    DetailLineTable.replaceData(data);
+
+    DetailLineTitle.innerText = `Invoice ID: ${row.getData().invoice_id}`;
+    DetailLineIssuer.innerText = `Issuer: ${row.getData().rep_firstname + " " + row.getData().rep_lastname} (ID: ${row.getData().rep_id})`;
+    detailline.showPopover()
+}

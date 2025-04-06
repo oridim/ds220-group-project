@@ -14,10 +14,10 @@
     <nav class="#424242 grey darken-3">
         <div class="nav-wrapper">
             <ul id="nav-mobile" class="left hide-on-med-and-down">
-                <li><a href="#" onclick="show('app-customer')" id="customer-button">Customer View</a></li>
-                <li><a href="#" onclick="show('app-sales-rep')" id="sales-button">Sales Representative View</a></li>
-                <li><a href="#" onclick="show('main')" id="back-button" class="hide">Back</a></li>
-                <li><a href="#" onclick="addInvoice()" id="add-invoice-button" class="hide">Add Invoice</a></li>
+                <li><a href="#" onclick="show('app-customer')" id="customer-button" class="white-text">Customer View</a></li>
+                <li><a href="#" onclick="show('app-sales-rep')" id="sales-button" class="white-text">Sales Representative View</a></li>
+                <li><a href="#" onclick="show('main')" id="back-button" class="hide white-text">Back</a></li>
+                <li><a href="#" onclick="addInvoice()" id="add-invoice-button" class="hide white-text">Add Invoice</a></li>
             </ul>   
         </div>
       </nav>
@@ -53,6 +53,17 @@
             -->
         </div>
     </div>
+</div>
+
+<div id="detailline" class="modal" popover>
+    <div class="modal-header">
+        <h4 id="detail-line-title">Modal Header</h4>
+    </div>
+    <div class="modal-content">
+        <p id="detail-line-issuer">Modal Content Issuer</p>
+        <table id="detail-line-table"></table>
+    </div>
+    <div class="modal-footer"></div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
