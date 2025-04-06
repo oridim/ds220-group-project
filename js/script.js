@@ -2,6 +2,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const elems = document.querySelectorAll('.modal');
     const instances = M.Modal.init(elems, {
     });
+
+    const addInvoiceModal = document.getElementById('addinvoice');
+    M.Modal.init(modalElem, {
+        dismissible: false
+    });
 });
 
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -24,10 +29,10 @@ var CustomerInventoryTable = new Tabulator(`#inventory-table`, {
     layout: "fitColumns",
     height: "300",
     columns: [
-        { title: "Product ID", field: "product_id", width: 150, hozAlign: "right", headerHozAlign: "right" },
+        { title: "Product ID", field: "product_id", width: 120, hozAlign: "right", headerHozAlign: "right" },
         { title: "Product", field: "product_name" },
         { title: "Vendor", field: "vendor_name" },
-        { title: "Vendor ID", field: "vendor_id", width: 150, hozAlign: "left", headerHozAlign: "left" },
+        { title: "Vendor ID", field: "vendor_id", width: 100, hozAlign: "left", headerHozAlign: "left" },
     ],
 });
 
@@ -35,12 +40,12 @@ var CustomerInvoicesTable = new Tabulator(`#customer-invoice-table`, {
     layout: "fitColumns",
     height: "fitData",
     columns: [
-        { title: "Invoice ID", field: "invoice_id", width: 150, hozAlign: "right", headerHozAlign: "right" },
+        { title: "Invoice ID", field: "invoice_id", width: 100, hozAlign: "right", headerHozAlign: "right" },
         { title: "Sales Representative", field: "rep_fullname", formatter: function (cell) {
                 const data = cell.getData();
                 return `${data.rep_firstname} ${data.rep_lastname}`;
             } },
-        { title: "Sales Rep ID", field: "rep_id", width: 150, hozAlign: "left", headerHozAlign: "left" },
+        { title: "Sales Rep ID", field: "rep_id", width: 100, hozAlign: "left", headerHozAlign: "left" },
     ],
 });
 
@@ -48,12 +53,12 @@ var SalesRepInvoiceTable = new Tabulator(`#rep-invoices-table`, {
     layout: "fitColumns",
     height: "fitData",
     columns: [
-        { title: "Invoice ID", field: "invoice_id", width: 150, hozAlign: "right", headerHozAlign: "right" },
+        { title: "Invoice ID", field: "invoice_id", width: 100, hozAlign: "right", headerHozAlign: "right" },
         { title: "Customer", field: "customer_fullname", formatter: function (cell) {
                 const data = cell.getData();
                 return `${data.customer_firstname} ${data.customer_lastname}`;
             } },
-        { title: "Customer ID", field: "customer_id", width: 150, hozAlign: "left", headerHozAlign: "left" },
+        { title: "Customer ID", field: "customer_id", width: 100, hozAlign: "left", headerHozAlign: "left" },
     ],
 });
 
@@ -61,11 +66,11 @@ var DetailLineTable = new Tabulator(`#detail-line-table`, {
     layout: "fitColumns",
     height: "fitData",
     columns: [
-        { title: "Product ID", field: "product_id", width: 150, hozAlign: "right", headerHozAlign: "right" },
+        { title: "Product ID", field: "product_id", width: 120, hozAlign: "right", headerHozAlign: "right" },
         { title: "Product Name", field: "product_name" },
         { title: "Vendor Name", field: "vendor_name" },
-        { title: "Vendor ID", field: "vendor_id", width: 150, hozAlign: "left", headerHozAlign: "left" },
-        { title: "Quantity", field: "quantity", width: 150, hozAlign: "right", headerHozAlign: "right" },
+        { title: "Vendor ID", field: "vendor_id", width: 100, hozAlign: "left", headerHozAlign: "left" },
+        { title: "Quantity", field: "quantity", width: 100, hozAlign: "right", headerHozAlign: "right" },
     ],
 });
 
@@ -185,10 +190,6 @@ async function validateSalesRepId(input_id) {
     }
 }
 
-async function addInvoice() {
-    // TODO: Add Invoice, no arguments, only using DOM elements for simplicity
-}
-
 function clearTables() {
     CustomerInventoryTable.clearData();
     CustomerInvoicesTable.clearData();
@@ -230,3 +231,108 @@ async function showDetailLine(e, row, role) {
     }
     detailline.showPopover();
 }
+
+// ADD INVOICE
+var ProductsGet = [];
+const InvoiceAddCustomerID = document.getElementById("add-invoice-id");
+
+var InvoiceAddCustomerTable = new Tabulator(`#customer-log`, {
+    layout: "fitColumns",
+    height: "150",
+    columns: [
+        { title: "ID", field: "customer_id", width: 50, hozAlign: "right", headerHozAlign: "right" },
+        { title: "Customer", field: "customer_fullname", width: 300 },
+    ],
+});
+
+var InvoiceAddProductTable = new Tabulator(`#product-log`, {
+    layout: "fitColumns",
+    height: "300",
+    columns: [
+        { title: "Product ID", field: "product_id", width: 120, hozAlign: "right", headerHozAlign: "right" },
+        { title: "Product", field: "product_name" },
+        { title: "Vendor", field: "vendor_name" },
+        { title: "Vendor ID", field: "vendor_id", width: 100, hozAlign: "right", headerHozAlign: "right" },
+    ],
+});
+
+var InvoiceAddProductGetTable = new Tabulator(`#product-get`, {
+    layout: "fitColumns",
+    height: "200",
+    columns: [
+        { title: "Product ID", field: "product_id", width: 120, hozAlign: "right", headerHozAlign: "right" },
+        { title: "Product", field: "product_name" },
+        { title: "Quantity", field: "quantity", width: 100, hozAlign: "right", headerHozAlign: "right" },
+    ],
+});
+
+async function getCustomersForDictionary() {
+    const { data, error } = await supabase.rpc('get_all_customers');
+
+    if (error) { console.log(error); }
+
+    let customerArray = [];
+
+    data.forEach(customer => {
+        customerArray.push({
+            customer_id: customer.customer_id,
+            customer_fullname: `${customer.customer_firstname} ${customer.customer_lastname}`
+        });
+    });
+
+    InvoiceAddCustomerTable.replaceData(customerArray);
+}
+
+async function getProductsForDictionary() {
+    const { data, error } = await supabase.rpc('view_all_products');
+
+    if (error) { console.log(error); }
+
+    InvoiceAddProductTable.replaceData(data);
+}
+
+AddInvoiceButton.addEventListener("click", function() {
+    if(SalesRepIDInput.value === "") {
+        alert("Please enter your Sales Representative ID.");
+        return;
+    }
+    getCustomersForDictionary();
+    getProductsForDictionary();
+    ProductsGet = [];
+    InvoiceAddProductGetTable.clearData();
+    InvoiceAddCustomerID.value = "";
+    addinvoice.showPopover();
+});
+
+InvoiceAddProductTable.on("rowClick", function (e, row) {
+    const productId = row.getData().product_id;
+    const productName = row.getData().product_name;
+    const quantity = 1;
+
+    const existingProduct = ProductsGet.find(product => product.product_id === productId);
+    if (existingProduct) {
+        existingProduct.quantity++;
+    } else {
+        ProductsGet.push({
+            product_id: productId,
+            product_name: productName,
+            quantity: quantity
+        });
+    }
+
+    InvoiceAddProductGetTable.replaceData(ProductsGet);
+});
+
+InvoiceAddProductGetTable.on("rowClick", function (e, row) {
+    const productId = row.getData().product_id;
+    const existingProduct = ProductsGet.find(product => product.product_id === productId);
+
+    if (existingProduct) {
+        existingProduct.quantity--;
+        if (existingProduct.quantity <= 0) {
+            ProductsGet = ProductsGet.filter(product => product.product_id !== productId);
+        }
+    }
+
+    InvoiceAddProductGetTable.replaceData(ProductsGet);
+});

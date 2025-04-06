@@ -17,6 +17,14 @@
     color: #1a1c1e;
 }
 
+/* This is only here because Firefox likes auto-theming */
+@media (prefers-color-scheme: dark) {
+    .modal {
+        background-color: #1a1c1e;
+        color: #e2e2e5;
+    }
+}
+
 #customer-id {
     width: 20em;
 }
