@@ -17,7 +17,7 @@ BackButton = document.getElementById("back-button");
 AddInvoiceButton = document.getElementById("add-invoice-button");
 CustomerIDInput = document.getElementById("customer-id-input");
 SalesRepIDInput = document.getElementById("rep-id-input");
-InventoryVendorInput = document.getElementById("inventory-filter");
+InventoryFilterInput = document.getElementById("inventory-filter");
 InventoryPurchasedCheckbox = document.getElementById("inventory-purchased-checkbox");
 
 var CustomerInventoryTable = new Tabulator(`#inventory-table`, {
@@ -69,13 +69,16 @@ var DetailLineTable = new Tabulator(`#detail-line-table`, {
     ],
 });
 
-InventoryVendorInput.addEventListener("keyup", function() {
+InventoryFilterInput.addEventListener("keyup", function () {
     const keyword = this.value.toLowerCase();
 
-    CustomerInventoryTable.setFilter([
-        { field: "vendor_name", type: "like", value: keyword },
-    ]);
-})
+    CustomerInventoryTable.setFilter(function (data, filterParams) {
+        return (
+            data.vendor_name.toLowerCase().includes(keyword) ||
+            data.product_name.toLowerCase().includes(keyword)
+        );
+    });
+});
 
 InventoryPurchasedCheckbox.addEventListener("change", function() {
     getAllProducts(CustomerIDInput.value);
@@ -137,7 +140,7 @@ async function getAllProducts(input) {
     if (error) { console.log(error); }
 
     CustomerInventoryTable.replaceData(data);
-    InventoryVendorInput.value = "";
+    InventoryFilterInput.value = "";
 }
 
 async function getAllCustomerInvoices(input_id) {
