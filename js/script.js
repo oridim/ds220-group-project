@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     const addInvoiceModal = document.getElementById('addinvoice');
-    M.Modal.init(modalElem, {
+    M.Modal.init(addInvoiceModal, {
         dismissible: false
     });
 });
