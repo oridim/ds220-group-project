@@ -109,8 +109,6 @@ Here are a list of assumed queries that our sales representatives and customers 
 
   - Sales representatives should _only_ be able to view invoices _they have issued_.
   - Customers should _only_ be able to view invoices _they been issued_.
-  - Both sales representatives and customers will want to filter invoices _by vendor_.
-  - Both sales representatives and customers will want to filter invoices _by product_.
 
 ## Logical Stage
 
