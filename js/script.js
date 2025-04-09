@@ -236,6 +236,7 @@ async function showDetailLine(e, row, role) {
 // TODO: Finish implementing the add invoice functionality
 var ProductsGet = [];
 const InvoiceAddCustomerID = document.getElementById("add-invoice-id");
+const InvoiceAddForm = document.getElementById("add-invoice-form");
 
 var InvoiceAddCustomerTable = new Tabulator(`#customer-log`, {
     layout: "fitColumns",
@@ -292,18 +293,39 @@ async function getProductsForDictionary() {
     InvoiceAddProductTable.replaceData(data);
 }
 
-AddInvoiceButton.addEventListener("click", function() {
-    if(SalesRepIDInput.value === "") {
-        alert("Please enter your Sales Representative ID.");
+AddInvoiceButton.addEventListener("click", async function () {
+    const isRep = await ValidateSalesRep();
+
+    console.log(isRep);
+
+    if (SalesRepIDInput.value === "" || !isRep) {
+        alert("Please enter a valid Sales Representative ID.");
         return;
     }
-    getCustomersForDictionary();
-    getProductsForDictionary();
+
+    await getCustomersForDictionary();
+    await getProductsForDictionary();
     ProductsGet = [];
     InvoiceAddProductGetTable.clearData();
     InvoiceAddCustomerID.value = "";
     addinvoice.showPopover();
 });
+
+async function ValidateSalesRep() {
+    ids = [];
+    const numberID = Number(SalesRepIDInput.value);
+
+    const { data, error } = await supabase.rpc('get_all_sales_rep_ids');
+
+    if (error) { console.log(error); }
+
+    data.forEach((item) => {
+        ids.push(item.rep_id);
+    })
+
+    return ids.includes(numberID);
+
+}
 
 InvoiceAddProductTable.on("rowClick", function (e, row) {
     const productId = row.getData().product_id;
@@ -322,6 +344,7 @@ InvoiceAddProductTable.on("rowClick", function (e, row) {
     }
 
     InvoiceAddProductGetTable.replaceData(ProductsGet);
+    console.log(ProductsGet);
 });
 
 InvoiceAddProductGetTable.on("rowClick", function (e, row) {
@@ -336,4 +359,56 @@ InvoiceAddProductGetTable.on("rowClick", function (e, row) {
     }
 
     InvoiceAddProductGetTable.replaceData(ProductsGet);
+    console.log(ProductsGet);
+});
+
+InvoiceAddCustomerTable.on("rowClick", function (e, row) {
+    InvoiceAddCustomerID.value = row.getData().customer_id;
+});
+
+InvoiceAddForm.addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const customerId = InvoiceAddCustomerID.value;
+    const salesRepId = SalesRepIDInput.value;
+    const detaillines = [];
+
+    ProductsGet.forEach(product => {
+        for (let i = 0; i < product.quantity; i++) {
+            detaillines.push({
+                product_id: product.product_id
+            });
+        }
+    });
+
+    if (customerId === "" || ProductsGet.length === 0) {
+        alert("Please select a customer and/or at least one product.");
+        return;
+    }
+
+    // Build the invoice using the REST API
+    const { data, error1 } = await supabase
+        .from('invoice')
+        .insert([
+            { issuedto: customerId, writtenby: salesRepId }
+        ]).select('id');
+
+    const invoiceId = data[0].id;
+
+    if (error1) { console.log(error1); }
+
+    const { error2 } = await supabase
+        .from('detailline')
+        .insert(
+            detaillines.map(product => ({
+                writtenin: invoiceId,
+                itemizes: product.product_id
+            }))
+        );
+
+    if (error2) { console.log(error2); }
+
+    addinvoice.hidePopover();
+
+    await getAllSalesRepInvoices(salesRepId);
 });
